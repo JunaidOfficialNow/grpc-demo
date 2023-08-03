@@ -4,6 +4,8 @@ const PROTO_PATH = join(__dirname, '..', 'hero.proto')
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 
+
+
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   logn: String,
@@ -15,10 +17,15 @@ const heroesProto = grpc.loadPackageDefinition(packageDefinition).hero;
 
 const server = new grpc.Server();
 
+count = 0
 
 server.addService(heroesProto.HeroesService.service, {
   findOne: (call, callback) => {
-    callback(null, { id: 1, name: 'junai' });
+    call.write({id: count++, name: 'junai' })
+    call.write({ id: count++, name: 'hamsa'})
+    call.end();
+
+    // callback(null, { id: count++, name: 'junai' });
   }
 })
 

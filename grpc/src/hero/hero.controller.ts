@@ -7,6 +7,8 @@ export class HeroController {
   constructor(private heroService: HeroService) {}
   @Get()
   getHero(): Observable<any> {
-    return this.heroService.getHero();
+    const result = this.heroService.getHero();
+    console.log(result.subscribe((value) => console.log(value)));
+    return result;
   }
 }
